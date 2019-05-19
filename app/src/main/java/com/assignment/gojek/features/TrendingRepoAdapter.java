@@ -18,41 +18,58 @@ import java.util.List;
  * Created by Pawan Gupta on 19/05/19.
  */
 public class TrendingRepoAdapter extends RecyclerView.Adapter<TrendingRepoAdapter.ViewHolder> {
-    List<GitRepo> mGitRepos = new ArrayList<>();
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        ItemRepoBinding itemRepoBinding = DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),R.layout.item_repo, viewGroup, false);
-        return new ViewHolder(itemRepoBinding);
-    }
+	private List<GitRepo> mGitRepos;
+	private ActionHandler mHandler;
 
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.bind(mGitRepos.get(i));
-    }
+	public TrendingRepoAdapter(ActionHandler handler){
+		mGitRepos = new ArrayList<>();
+		mHandler = handler;
+	}
 
-    @Override
-    public int getItemCount() {
-        return mGitRepos.size();
-    }
+	@NonNull
+	@Override
+	public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+		ItemRepoBinding itemRepoBinding = DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.item_repo, viewGroup, false);
+		return new ViewHolder(itemRepoBinding);
+	}
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        ItemRepoBinding mItemRepoBinding;
-        public ViewHolder(@NonNull ItemRepoBinding itemRepoBinding) {
-            super(itemRepoBinding.getRoot());
-            mItemRepoBinding = itemRepoBinding;
-        }
+	@Override
+	public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+		viewHolder.bind(mGitRepos.get(i), mHandler);
+	}
 
-        public void bind(GitRepo gitRepo){
-            mItemRepoBinding.setGitRepo(gitRepo);
-        }
-    }
+	@Override
+	public int getItemCount() {
+		return mGitRepos.size();
+	}
 
-    public void updateData(List<GitRepo> gitRepos){
-        if(!CollectionUtils.isEmpty(mGitRepos)){
-            mGitRepos.clear();
-        }
-        mGitRepos.addAll(gitRepos);
-        notifyDataSetChanged();
-    }
+	public class ViewHolder extends RecyclerView.ViewHolder {
+		ItemRepoBinding mItemRepoBinding;
+
+		public ViewHolder(@NonNull ItemRepoBinding itemRepoBinding) {
+			super(itemRepoBinding.getRoot());
+			mItemRepoBinding = itemRepoBinding;
+		}
+
+		public void bind(GitRepo gitRepo, ActionHandler handler) {
+			mItemRepoBinding.setGitRepo(gitRepo);
+			mItemRepoBinding.getRoot().setOnClickListener(v -> {
+				if(handler != null){
+					handler.expand(gitRepo);
+				}
+			});
+		}
+	}
+
+	public void updateData(List<GitRepo> gitRepos) {
+		if (!CollectionUtils.isEmpty(mGitRepos)) {
+			mGitRepos.clear();
+		}
+		mGitRepos.addAll(gitRepos);
+		notifyDataSetChanged();
+	}
+
+	public int getItemPosition(GitRepo repo){
+		return mGitRepos.indexOf(repo);
+	}
 }

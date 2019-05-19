@@ -1,17 +1,19 @@
 package com.assignment.gojek.dependencies.modules;
 
-import android.os.Debug;
+import android.content.Context;
 
 import com.assignment.gojek.BuildConfig;
-import com.assignment.gojek.network.ApiUrls;
-import com.assignment.gojek.network.services.TrendingRepoService;
+import com.assignment.gojek.Constants;
+import com.assignment.gojek.utils.Utilities;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import okhttp3.Interceptor;
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -21,24 +23,56 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 @Module
 public class NetworkModule {
-    @Singleton
-    @Provides
-    Retrofit providesRetrofitClient(){
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
-        httpClientBuilder.addInterceptor(loggingInterceptor);
+	@Singleton
+	@Provides
+	@Named("retrofit")
+	Retrofit providesRetrofitClientWithCache(Context context) {
+		return getClient(context);
+	}
 
-        return new Retrofit.Builder()
-                .client(httpClientBuilder.build())
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(BuildConfig.BASE_URL)
-                .build();
-    }
+	@Singleton
+	@Provides
+	@Named("retrofit_force_network")
+	Retrofit providesRetrofitClient() {
+		return getClientWithoutCache();
+	}
 
-    @Singleton
-    @Provides
-    TrendingRepoService providesTrendingRepoService(Retrofit retrofit){
-        return retrofit.create(TrendingRepoService.class);
-    }
+	private Retrofit getClient(Context context) {
+		Cache mCache = new Cache(context.getCacheDir(), Constants.CACHE_SIZE);
+		HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+		loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+		OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
+		httpClientBuilder.addInterceptor(chain -> {
+			Request request = chain.request();
+			if (Utilities.isOnline(context)) {
+				request.newBuilder().header("Cache-Control", "public, max-age=" + Constants.CACHE_EXPIRE_TIME).build();
+			} else {
+				request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + Constants.CACHE_EXPIRE_TIME).build();
+			}
+
+			return chain.proceed(request);
+		});
+		httpClientBuilder.cache(mCache);
+		httpClientBuilder.addInterceptor(loggingInterceptor);
+
+		return new Retrofit.Builder()
+				.client(httpClientBuilder.build())
+				.addConverterFactory(GsonConverterFactory.create())
+				.baseUrl(BuildConfig.BASE_URL)
+				.build();
+	}
+
+
+	private Retrofit getClientWithoutCache() {
+		HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+		loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+		OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
+		httpClientBuilder.addInterceptor(loggingInterceptor);
+		return new Retrofit.Builder()
+				.client(httpClientBuilder.build())
+				.addConverterFactory(GsonConverterFactory.create())
+				.baseUrl(BuildConfig.BASE_URL)
+				.build();
+	}
+
 }

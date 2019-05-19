@@ -16,8 +16,8 @@ import dagger.Provides;
 public class AppModule {
     private final GoJekAssignment app;
 
-    public AppModule(GoJekAssignment templateApp) {
-        this.app = templateApp;
+    public AppModule(GoJekAssignment goJekAssignment) {
+        this.app = goJekAssignment;
     }
 
     @Singleton

@@ -3,6 +3,8 @@ package com.assignment.gojek;
 import android.support.multidex.MultiDexApplication;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
+
+import com.assignment.gojek.dependencies.modules.AppModule;
 import com.crashlytics.android.Crashlytics;
 import com.assignment.gojek.dependencies.AppComponent;
 import com.assignment.gojek.dependencies.DaggerAppComponent;
@@ -65,7 +67,7 @@ public class GoJekAssignment extends MultiDexApplication {
     }
 
     private void initDagger() {
-        mAppComponent = DaggerAppComponent.builder()
+        mAppComponent = DaggerAppComponent.builder().appModule(new AppModule(this))
                 .build();
     }
 

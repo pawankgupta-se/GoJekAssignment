@@ -1,12 +1,18 @@
 package com.assignment.gojek.utils;
 
 
+import android.content.res.ColorStateList;
 import android.databinding.BindingAdapter;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
+import android.os.Debug;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
@@ -17,7 +23,10 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.assignment.gojek.R;
+import com.crashlytics.android.Crashlytics;
 import com.facebook.shimmer.ShimmerFrameLayout;
+
+import timber.log.Timber;
 
 /**
  * Created by Pawan Gupta on 19/05/19.
@@ -55,14 +64,28 @@ public class BindingAdapterUtil {
 
 	@BindingAdapter("progress")
 	public static void showProgress(ShimmerFrameLayout progressView, boolean show) {
-		if(show){
+		if (show) {
 			progressView.setVisibility(View.VISIBLE);
 			progressView.startShimmerAnimation();
-		}else {
+		} else {
 			progressView.setVisibility(View.GONE);
 			progressView.stopShimmerAnimation();
 		}
 	}
 
-
+	@BindingAdapter("drawableTint")
+	public static void showProgress(TextView view, String tint) {
+		try {
+			int color = Color.parseColor(tint);
+			for (Drawable drawable : view.getCompoundDrawables()) {
+				if (drawable != null) {
+					drawable.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
+				}
+			}
+		} catch (NullPointerException e) {
+			Timber.e(e);
+		} catch (Exception e) {
+			Timber.e(e);
+		}
+	}
 }

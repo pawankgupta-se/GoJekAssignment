@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.view.View;
 import android.widget.Toast;
 
 /**
@@ -19,9 +21,10 @@ public class Utilities {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    public static void showError(@Nullable Context context, String error) {
-        if (context == null) return;
-        Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+    public static void showError(@Nullable View view, String error) {
+        if (view == null) return;
+        Snackbar.make(view, error, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
     }
 
 }

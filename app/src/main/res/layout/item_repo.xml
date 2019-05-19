@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools">
+	xmlns:tools="http://schemas.android.com/tools"
+	>
 
 	<data>
 
+		<import type="android.view.View"/>
 		<variable
 			name="gitRepo"
 			type="com.assignment.gojek.models.GitRepo" />
@@ -13,6 +15,7 @@
 	<android.support.constraint.ConstraintLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:animateLayoutChanges="true"
 		android:padding="@dimen/spacing_normal">
 
 		<android.support.v7.widget.AppCompatImageView
@@ -22,9 +25,9 @@
 			android:scaleType="centerCrop"
 			android:src="@drawable/ic_default_image"
 			app:imageUrl="@{gitRepo.authorAvatar}"
-			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintTop_toTopOf="@id/author_name"
 			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent" />
+			app:layout_constraintBottom_toBottomOf="@id/repo_name" />
 
 		<android.support.v7.widget.AppCompatTextView
 			android:id="@+id/author_name"
@@ -37,6 +40,9 @@
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toEndOf="@+id/avatar"
 			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintBottom_toTopOf="@id/repo_name"
+			app:layout_constraintVertical_bias="0"
+			app:layout_constraintVertical_chainStyle="packed"
 			tools:text="Author" />
 
 		<android.support.v7.widget.AppCompatTextView
@@ -51,7 +57,76 @@
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toEndOf="@+id/avatar"
 			app:layout_constraintTop_toBottomOf="@id/author_name"
+			app:layout_constraintBottom_toTopOf="@id/guide_line"
 			tools:text="Repo Name" />
 
+		<View
+			android:id="@+id/guide_line"
+			android:layout_width="0dp"
+			android:layout_height="1dp"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/repo_name"
+			app:layout_constraintBottom_toTopOf="@id/technology"
+			/>
+
+		<android.support.constraint.Group
+			android:id="@+id/group"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:visibility="@{gitRepo.expanded ? View.VISIBLE : View.GONE}"
+			app:constraint_referenced_ids="detail,technology,star,fork"
+			/>
+		<android.support.v7.widget.AppCompatTextView
+			android:id="@+id/detail"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="@dimen/spacing_small"
+			android:layout_marginTop="@dimen/spacing_small"
+			tools:text="Details"
+			android:text="@{gitRepo.description}"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/guide_line"
+			app:layout_constraintBottom_toTopOf="@id/technology"
+			/>
+
+		<android.support.v7.widget.AppCompatTextView
+			android:id="@+id/technology"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:drawableTint="@{gitRepo.languageColor}"
+			android:text="@{gitRepo.language}"
+			tools:text="Java"
+			android:drawablePadding="@dimen/spacing_extra_small"
+			android:drawableStart="@drawable/shape_round_red"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/detail"
+			 />
+
+		<android.support.v7.widget.AppCompatTextView
+			android:id="@+id/star"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@{String.valueOf(gitRepo.stars)}"
+			tools:text="232"
+			android:drawablePadding="@dimen/spacing_extra_small"
+			android:layout_marginStart="@dimen/spacing_normal"
+			android:drawableStart="@drawable/star_yellow_16"
+			app:layout_constraintStart_toEndOf="@id/technology"
+			app:layout_constraintTop_toBottomOf="@id/detail"
+	 />
+
+		<android.support.v7.widget.AppCompatTextView
+			android:id="@+id/fork"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="@dimen/spacing_normal"
+			tools:text="232+"
+			android:text="@{String.valueOf(gitRepo.forks)}"
+			android:drawablePadding="@dimen/spacing_extra_small"
+			android:drawableStart="@drawable/fork_black_16"
+			app:layout_constraintStart_toEndOf="@id/star"
+			app:layout_constraintTop_toBottomOf="@id/detail"
+		 />
 	</android.support.constraint.ConstraintLayout>
 </layout>

@@ -8,18 +8,18 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.assignment.gojek.BaseFragment;
+import com.assignment.gojek.R;
 import com.assignment.gojek.databinding.FragmentHomeBinding;
 import com.assignment.gojek.models.GitRepo;
-import com.assignment.gojek.R;
 import com.assignment.gojek.utils.Utilities;
 
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -27,7 +27,8 @@ import java.util.List;
  */
 public class HomeFragment extends BaseFragment<HomeViewModel> {
 	private FragmentHomeBinding mFragmentHomeBinding;
-	private TrendingRepoAdapter mTrendingReopAdapter;
+	private TrendingRepoAdapter mTrendingRepoAdapter;
+	private GitRepo currentExpandedItem = null;
 
 	public static HomeFragment newInstance() {
 		return new HomeFragment();
@@ -38,7 +39,9 @@ public class HomeFragment extends BaseFragment<HomeViewModel> {
 		super.onCreate(savedInstanceState);
 		getAppComponent().inject(this);
 		initViewModel(HomeViewModel.class);
-
+		if (mViewModel != null) {
+			currentExpandedItem = mViewModel.getCurrentExpandedItem().getValue();
+		}
 	}
 
 	@Nullable
@@ -49,53 +52,85 @@ public class HomeFragment extends BaseFragment<HomeViewModel> {
 		loadData(true);
 		mFragmentHomeBinding.setViewModel(mViewModel);
 		mFragmentHomeBinding.setLifecycleOwner(getViewLifecycleOwner());
-		mViewModel.getError().observe(getViewLifecycleOwner(), error -> {
-			if (!TextUtils.isEmpty(error)) {
-				Activity activity = getActivity();
-				showData(false);
-			}
-		});
-
 		return mFragmentHomeBinding.getRoot();
 	}
 
 	private void loadData(boolean isInitialLoading) {
-		if (Utilities.isOnline(getContext())) {
-			mViewModel.getTrendingRepo(isInitialLoading).observe(getViewLifecycleOwner(), repoList -> {
-				loadDataToView(repoList);
-				mFragmentHomeBinding.swipeContainer.setRefreshing(false);
-			});
-		} else {
-			Utilities.showError(getActivity(), getString(R.string.not_connected_to_internet));
+		mViewModel.getTrendingRepo(isInitialLoading).observe(getViewLifecycleOwner(), repoList -> {
+			resetItemState(repoList);
+			loadDataToView(repoList);
+			mFragmentHomeBinding.swipeContainer.setRefreshing(false);
+		});
+	}
+
+	private void resetItemState(List<GitRepo> repoList) {
+		if (currentExpandedItem != null) {
+			int index = repoList.indexOf(currentExpandedItem);
+			if (index >= 0) {
+				currentExpandedItem = repoList.get(index);
+				currentExpandedItem.setExpanded(true);
+			}
 		}
 	}
 
 	private void initViews() {
-		mTrendingReopAdapter = new TrendingRepoAdapter();
+		setTitle();
+		mViewModel.getGetSoftError().observe(getViewLifecycleOwner(), aBoolean -> {
+			if (aBoolean != null) {
+				if (aBoolean) {
+					mFragmentHomeBinding.swipeContainer.setRefreshing(false);
+					Utilities.showError(mFragmentHomeBinding.getRoot(), getString(R.string.unable_to_refresh));
+				}
+			}
+		});
+		mFragmentHomeBinding.errorLayout.tryAgainButton.setOnClickListener(v -> loadData(true));
+		mTrendingRepoAdapter = new TrendingRepoAdapter(this::handleItemClick);
 		LinearLayoutManager layoutManager = new LinearLayoutManager(mFragmentHomeBinding.recyclerView.getContext());
 		layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 		mFragmentHomeBinding.recyclerView.setLayoutManager(layoutManager);
 		mFragmentHomeBinding.recyclerView.setHasFixedSize(true);
-		mFragmentHomeBinding.recyclerView.setAdapter(mTrendingReopAdapter);
-		DividerItemDecoration itemDecor = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
-		itemDecor.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.divider));
+		mFragmentHomeBinding.recyclerView.setAdapter(mTrendingRepoAdapter);
+		DividerItemDecoration itemDecor = new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL);
+		itemDecor.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(getContext(), R.drawable.divider)));
 		mFragmentHomeBinding.recyclerView.addItemDecoration(itemDecor);
-		mFragmentHomeBinding.swipeContainer.setOnRefreshListener(() -> loadData(false));
+		mFragmentHomeBinding.swipeContainer.setOnRefreshListener(() -> mViewModel.refresh());
+	}
+
+	private void handleItemClick(GitRepo repo) {
+		if (currentExpandedItem != null && !currentExpandedItem.equals(repo)) {
+			currentExpandedItem.setExpanded(false);
+			mTrendingRepoAdapter.notifyItemChanged(mTrendingRepoAdapter.getItemPosition(currentExpandedItem));
+		}
+		if (repo.isExpanded()) {
+			repo.setExpanded(false);
+		} else {
+			repo.setExpanded(true);
+			currentExpandedItem = repo;
+			mViewModel.setCurrentExpandedItem(repo);
+		}
+		mTrendingRepoAdapter.notifyItemChanged(mTrendingRepoAdapter.getItemPosition(repo));
 	}
 
 	private void showData(boolean show) {
 		int visibility = show ? View.GONE : View.VISIBLE;
-		mFragmentHomeBinding.emptyView.setVisibility(visibility);
+		mFragmentHomeBinding.noContentLayout.getRoot().setVisibility(visibility);
 	}
 
 	private void loadDataToView(List<GitRepo> gitRepos) {
 		if (gitRepos != null) {
 			if (gitRepos.size() > 0) {
-				mTrendingReopAdapter.updateData(gitRepos);
+				mTrendingRepoAdapter.updateData(gitRepos);
 				showData(true);
 			} else {
 				showData(false);
 			}
+		}
+	}
+
+	private void setTitle() {
+		Activity activity = getActivity();
+		if (activity != null) {
+			getActivity().setTitle(R.string.trending_screen_title);
 		}
 	}
 }
