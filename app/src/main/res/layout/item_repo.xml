@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
+
+	<data>
+
+		<variable
+			name="gitRepo"
+			type="com.assignment.gojek.models.GitRepo" />
+	</data>
+
+	<android.support.constraint.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:padding="@dimen/spacing_normal">
+
+		<android.support.v7.widget.AppCompatImageView
+			android:id="@+id/repo_thumbnail"
+			android:layout_width="@dimen/thumbnail_size"
+			android:layout_height="@dimen/thumbnail_size"
+			android:scaleType="centerCrop"
+			android:src="@drawable/ic_default_image"
+			app:imageUrl="@{gitRepo.authorAvatar}"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
+
+		<android.support.v7.widget.AppCompatTextView
+			android:id="@+id/fact_title"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="@dimen/spacing_small"
+			android:maxLines="1"
+			android:text="@{gitRepo.author}"
+			android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+			android:textColor="@color/colorPrimary"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toEndOf="@+id/repo_thumbnail"
+			app:layout_constraintTop_toTopOf="parent"
+			tools:text="Author" />
+
+		<android.support.v7.widget.AppCompatTextView
+			android:id="@+id/fact_description"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="@dimen/spacing_small"
+			android:maxLines="1"
+			android:text="@{gitRepo.name}"
+			android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toEndOf="@+id/repo_thumbnail"
+			app:layout_constraintTop_toBottomOf="@id/fact_title"
+			tools:text="Repo Name" />
+
+	</android.support.constraint.ConstraintLayout>
+</layout>

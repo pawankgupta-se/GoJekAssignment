@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">GoJekAssignment</string>
+    <string name="not_connected_to_internet">There is no active internet connection.</string>
+    <string name="no_data_message">There is no data to display</string>
+</resources>
