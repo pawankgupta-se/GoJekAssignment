@@ -5,6 +5,7 @@ import android.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -16,6 +17,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.assignment.gojek.R;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 /**
  * Created by Pawan Gupta on 19/05/19.
@@ -23,12 +25,6 @@ import com.assignment.gojek.R;
 public class BindingAdapterUtil {
 	@BindingAdapter("imageUrl")
 	public static void loadImage(ImageView view, String imageUrl) {
-
-//		//Handling issue with image urls
-//		if (imageUrl != null && imageUrl.contains("http://")) {
-//			imageUrl = imageUrl.replace("http://", "https://");
-//		}
-
 		Glide.with(view.getContext())
 				.load(imageUrl)
 				.listener(new RequestListener<Drawable>() {
@@ -56,4 +52,17 @@ public class BindingAdapterUtil {
 						.circleCrop())
 				.into(view);
 	}
+
+	@BindingAdapter("progress")
+	public static void showProgress(ShimmerFrameLayout progressView, boolean show) {
+		if(show){
+			progressView.setVisibility(View.VISIBLE);
+			progressView.startShimmerAnimation();
+		}else {
+			progressView.setVisibility(View.GONE);
+			progressView.stopShimmerAnimation();
+		}
+	}
+
+
 }

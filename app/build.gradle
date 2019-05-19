@@ -205,6 +205,8 @@ dependencies {
     implementation "com.google.firebase:firebase-core:${libs.firebase}"
     implementation "com.crashlytics.sdk.android:crashlytics:${libs.crashlytics}"
 
+    implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
+
     //ViewModelProvider
     implementation "android.arch.lifecycle:extensions:${libs.viewModel}"
     implementation "android.arch.lifecycle:viewmodel:${libs.viewModel}"

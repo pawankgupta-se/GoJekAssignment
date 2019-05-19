@@ -22,7 +22,7 @@ public class TrendingRepoRepository {
 	}
 
 	@WorkerThread
-	public List<GitRepo> getFacts() throws IOException {
+	public List<GitRepo> getTrendingRepo() throws IOException {
 		Response<List<GitRepo>> response = mFactService.fetchTrendingRepo().execute();
 		if (response.isSuccessful()) {
 			return response.body();

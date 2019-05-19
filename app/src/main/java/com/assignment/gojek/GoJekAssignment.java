@@ -3,11 +3,9 @@ package com.assignment.gojek;
 import android.support.multidex.MultiDexApplication;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
-import com.assignment.gojek.BuildConfig;
 import com.crashlytics.android.Crashlytics;
 import com.assignment.gojek.dependencies.AppComponent;
 import com.assignment.gojek.dependencies.DaggerAppComponent;
-import com.assignment.gojek.dependencies.modules.AppModule;
 import com.squareup.leakcanary.LeakCanary;
 
 import java.io.PrintWriter;
@@ -48,22 +46,19 @@ public class GoJekAssignment extends MultiDexApplication {
                 }
             });
 
-            Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-                @Override
-                public void uncaughtException(Thread t, Throwable e) {
-                    SpannableStringBuilder ssb = new SpannableStringBuilder();
-                    ssb.append("Uncaught Exception: ");
-                    ssb.append(e.getLocalizedMessage());
-                    ssb.append("\nStack Trace:\n");
+            Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+                SpannableStringBuilder ssb = new SpannableStringBuilder();
+                ssb.append("Uncaught Exception: ");
+                ssb.append(e.getLocalizedMessage());
+                ssb.append("\nStack Trace:\n");
 
-                    StringWriter sw = new StringWriter();
-                    PrintWriter pw = new PrintWriter(sw);
-                    e.printStackTrace(pw);
-                    ssb.append(sw.toString());
+                StringWriter sw = new StringWriter();
+                PrintWriter pw = new PrintWriter(sw);
+                e.printStackTrace(pw);
+                ssb.append(sw.toString());
 
-                    Crashlytics.log(Log.ERROR, "Uncaught Exception", ssb.toString());
-                    Crashlytics.logException(e);
-                }
+                Crashlytics.log(Log.ERROR, "Uncaught Exception", ssb.toString());
+                Crashlytics.logException(e);
             });
         }
         initDagger();

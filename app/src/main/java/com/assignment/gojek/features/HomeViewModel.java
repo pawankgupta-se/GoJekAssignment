@@ -19,25 +19,42 @@ import timber.log.Timber;
  */
 public class HomeViewModel extends ViewModel {
 
-    @Inject
-    TrendingRepoRepository mTrendingRepoRepository;
-    private MutableLiveData <List<GitRepo>> mFacts = new MutableLiveData<>();
-    private MutableLiveData <String> mError = new MutableLiveData<>();
+	@Inject
+	TrendingRepoRepository mTrendingRepoRepository;
+	private MutableLiveData<List<GitRepo>> mRepoList = new MutableLiveData<>();
+	private MutableLiveData<String> mError = new MutableLiveData<>();
+	private MutableLiveData<Boolean> mProgress = new MutableLiveData<>();
 
-    @Inject public HomeViewModel(){}
+	@Inject
+	public HomeViewModel() {
+	}
 
-    public LiveData<List<GitRepo>> getFacts(){
-        new Thread(() -> {
-            try {
-                mFacts.postValue(mTrendingRepoRepository.getFacts());
-            } catch (IOException e) {
-                Timber.e(e);
-                mError.postValue(e.getMessage());
-            }
-        }).start();
-        return mFacts;
-    }
-    public LiveData<String> getError(){
-        return mError;
-    }
+	public LiveData<List<GitRepo>> getTrendingRepo(boolean isInitialLoading) {
+		if (isInitialLoading) {
+			mProgress.postValue(true);
+		}
+		new Thread(() -> {
+			try {
+				mRepoList.postValue(mTrendingRepoRepository.getTrendingRepo());
+				if (isInitialLoading) {
+					mProgress.postValue(false);
+				}
+			} catch (IOException e) {
+				Timber.e(e);
+				mError.postValue(e.getMessage());
+				if (isInitialLoading) {
+					mProgress.postValue(false);
+				}
+			}
+		}).start();
+		return mRepoList;
+	}
+
+	public LiveData<String> getError() {
+		return mError;
+	}
+
+	public LiveData<Boolean> getProgress() {
+		return mProgress;
+	}
 }

@@ -21,15 +21,13 @@ import com.assignment.gojek.utils.Utilities;
 
 import java.util.List;
 
-import static android.support.v7.widget.RecyclerView.HORIZONTAL;
-
 
 /**
  * Created by Pawan Gupta on 19/05/19.
  */
 public class HomeFragment extends BaseFragment<HomeViewModel> {
 	private FragmentHomeBinding mFragmentHomeBinding;
-	private TrendingRepoAdapter mFactAdapter;
+	private TrendingRepoAdapter mTrendingReopAdapter;
 
 	public static HomeFragment newInstance() {
 		return new HomeFragment();
@@ -48,21 +46,23 @@ public class HomeFragment extends BaseFragment<HomeViewModel> {
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		mFragmentHomeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
 		initViews();
-		loadData();
+		loadData(true);
+		mFragmentHomeBinding.setViewModel(mViewModel);
+		mFragmentHomeBinding.setLifecycleOwner(getViewLifecycleOwner());
 		mViewModel.getError().observe(getViewLifecycleOwner(), error -> {
 			if (!TextUtils.isEmpty(error)) {
 				Activity activity = getActivity();
-				Utilities.showError(activity, error);
+				showData(false);
 			}
 		});
 
 		return mFragmentHomeBinding.getRoot();
 	}
 
-	private void loadData() {
+	private void loadData(boolean isInitialLoading) {
 		if (Utilities.isOnline(getContext())) {
-			mViewModel.getFacts().observe(getViewLifecycleOwner(), facts -> {
-				loadDataToView(facts);
+			mViewModel.getTrendingRepo(isInitialLoading).observe(getViewLifecycleOwner(), repoList -> {
+				loadDataToView(repoList);
 				mFragmentHomeBinding.swipeContainer.setRefreshing(false);
 			});
 		} else {
@@ -71,16 +71,16 @@ public class HomeFragment extends BaseFragment<HomeViewModel> {
 	}
 
 	private void initViews() {
-		mFactAdapter = new TrendingRepoAdapter();
+		mTrendingReopAdapter = new TrendingRepoAdapter();
 		LinearLayoutManager layoutManager = new LinearLayoutManager(mFragmentHomeBinding.recyclerView.getContext());
 		layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 		mFragmentHomeBinding.recyclerView.setLayoutManager(layoutManager);
 		mFragmentHomeBinding.recyclerView.setHasFixedSize(true);
-		mFragmentHomeBinding.recyclerView.setAdapter(mFactAdapter);
+		mFragmentHomeBinding.recyclerView.setAdapter(mTrendingReopAdapter);
 		DividerItemDecoration itemDecor = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
 		itemDecor.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.divider));
 		mFragmentHomeBinding.recyclerView.addItemDecoration(itemDecor);
-		mFragmentHomeBinding.swipeContainer.setOnRefreshListener(() -> loadData());
+		mFragmentHomeBinding.swipeContainer.setOnRefreshListener(() -> loadData(false));
 	}
 
 	private void showData(boolean show) {
@@ -91,7 +91,7 @@ public class HomeFragment extends BaseFragment<HomeViewModel> {
 	private void loadDataToView(List<GitRepo> gitRepos) {
 		if (gitRepos != null) {
 			if (gitRepos.size() > 0) {
-				mFactAdapter.updateData(gitRepos);
+				mTrendingReopAdapter.updateData(gitRepos);
 				showData(true);
 			} else {
 				showData(false);
