@@ -163,7 +163,7 @@ def libs =  [
     leakCanary:     "1.5.4",
     mockito:        "2.7.1",
     supportTest:    "1.0.2",
-    junit:          "4.12",
+    junit:          "4.13.2",
     espresso:       "3.0.2",
     dagger:         "2.14.1",
     glide:          "4.7.1",
