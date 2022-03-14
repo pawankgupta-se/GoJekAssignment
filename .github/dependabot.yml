@@ -9,3 +9,8 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
+      #time: "04:00"
+      #timezone: Europe/Berlin
+    open-pull-requests-limit: 99
+    ignore:
+      #- dependency-name: "com.google.firebase:firebase-bom"
