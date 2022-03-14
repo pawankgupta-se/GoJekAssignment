@@ -160,7 +160,7 @@ def libs =  [
     okhttp:         "3.10.0",
     okhttpLogging:  "3.4.1",
     annotation:     "3.1.1",
-    leakCanary:     "1.5.4",
+    leakCanary:     "1.6.3",
     mockito:        "2.7.1",
     supportTest:    "1.0.2",
     junit:          "4.12",
