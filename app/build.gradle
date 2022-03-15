@@ -169,7 +169,7 @@ def libs =  [
     glide:          "4.13.1",
     room:           "1.1.1",
     firebase:       "16.0.4",
-    crashlytics:    "2.9.5",
+    crashlytics:    "2.10.1",
     constraintLayout: "1.1.3",
     viewModel:      "1.1.1",
     cardIO : "5.5.1"
