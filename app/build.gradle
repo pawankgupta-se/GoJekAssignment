@@ -170,7 +170,7 @@ def libs =  [
     room:           "1.1.1",
     firebase:       "16.0.4",
     crashlytics:    "2.9.5",
-    constraintLayout: "1.1.3",
+    constraintLayout: "2.0.4",
     viewModel:      "1.1.1",
     cardIO : "5.5.1"
 ]
