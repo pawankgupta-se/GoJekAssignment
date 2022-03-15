@@ -13,10 +13,10 @@ import java.util.Objects;
  * Created by Pawan Gupta on 19/05/19.
  */
 public class GitRepo implements Parcelable {
-	@SerializedName("author")
+	@SerializedName("username")
 	@Expose
 	private String author;
-	@SerializedName("name")
+	@SerializedName("repositoryName")
 	@Expose
 	private String name;
 	@SerializedName("url")
@@ -31,13 +31,13 @@ public class GitRepo implements Parcelable {
 	@SerializedName("languageColor")
 	@Expose
 	private String languageColor;
-	@SerializedName("stars")
+	@SerializedName("totalStars")
 	@Expose
 	private int stars;
 	@SerializedName("forks")
 	@Expose
 	private int forks;
-	@SerializedName("currentPeriodStars")
+	@SerializedName("starsSince")
 	@Expose
 	private int currentPeriodStars;
 	@SerializedName("builtBy")

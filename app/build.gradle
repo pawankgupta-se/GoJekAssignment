@@ -108,18 +108,18 @@ android {
             dimension "track"
             applicationIdSuffix ".dev"
             signingConfig signingConfigs.dev
-            buildConfigField "String", "BASE_URL", "\"https://github-trending-api.now.sh/\""
+            buildConfigField "String", "BASE_URL", "\"https://gh-trending-api.herokuapp.com/\""
         }
         qa {
             dimension "track"
             applicationIdSuffix ".qa"
             signingConfig signingConfigs.qa
-            buildConfigField "String", "BASE_URL", "\"https://github-trending-api.now.sh/\""
+            buildConfigField "String", "BASE_URL", "\"https://gh-trending-api.herokuapp.com/\""
         }
         prod {
             dimension "track"
             signingConfig signingConfigs.prod
-            buildConfigField "String", "BASE_URL", "\"https://github-trending-api.now.sh/\""
+            buildConfigField "String", "BASE_URL", "\"https://gh-trending-api.herokuapp.com/\""
         }
     }
 
