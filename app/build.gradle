@@ -168,7 +168,7 @@ def libs =  [
     dagger:         "2.41",
     glide:          "4.13.1",
     room:           "1.1.1",
-    firebase:       "16.0.4",
+    firebase:       "20.1.0",
     crashlytics:    "2.10.1",
     constraintLayout: "2.0.4",
     viewModel:      "1.1.1",

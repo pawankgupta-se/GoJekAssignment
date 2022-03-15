@@ -3,10 +3,12 @@ package com.assignment.gojek.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by Pawan Gupta on 19/05/19.

@@ -1,13 +1,7 @@
 package com.assignment.gojek.features;
 
 import android.app.Activity;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +15,13 @@ import com.assignment.gojek.utils.Utilities;
 import java.util.List;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 /**
  * Created by Pawan Gupta on 19/05/19.
@@ -30,7 +31,7 @@ public class HomeFragment extends BaseFragment<HomeViewModel> {
 	private TrendingRepoAdapter mTrendingRepoAdapter;
 	private GitRepo currentExpandedItem = null;
 
-	public static HomeFragment newInstance() {
+	public static Fragment newInstance() {
 		return new HomeFragment();
 	}
 

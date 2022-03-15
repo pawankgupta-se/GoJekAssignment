@@ -2,14 +2,14 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto">
 
-	<android.support.design.widget.AppBarLayout
+	<com.google.android.material.appbar.AppBarLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_horizontal"
 		android:background="@color/white"
 		>
 
-		<android.support.v7.widget.Toolbar
+		<androidx.appcompat.widget.Toolbar
 			android:id="@+id/customToolbar"
 			android:layout_width="match_parent"
 			android:layout_height="?attr/actionBarSize">
@@ -24,10 +24,10 @@
 			android:gravity="center"
 			android:text="Hello world"
 			android:textColor="@android:color/black" />
-		</android.support.v7.widget.Toolbar>
+		</androidx.appcompat.widget.Toolbar>
 
 
-	</android.support.design.widget.AppBarLayout>
+	</com.google.android.material.appbar.AppBarLayout>
 
 
 </layout>

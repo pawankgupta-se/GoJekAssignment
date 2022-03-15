@@ -1,21 +1,15 @@
 package com.assignment.gojek.utils;
 
 
-import android.content.res.ColorStateList;
-import android.databinding.BindingAdapter;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
-import android.os.Debug;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
@@ -23,9 +17,11 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.assignment.gojek.R;
-import com.crashlytics.android.Crashlytics;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.BindingAdapter;
 import timber.log.Timber;
 
 /**
@@ -43,7 +39,7 @@ public class BindingAdapterUtil {
 												boolean isFirstResource) {
 						view.post(() -> view
 								.setImageDrawable(ContextCompat.getDrawable(view.getContext(),
-										R.drawable.ic_default_image)));
+																			R.drawable.ic_default_image)));
 						view.setScaleType(ImageView.ScaleType.CENTER_CROP);
 						return false;
 					}
@@ -66,10 +62,10 @@ public class BindingAdapterUtil {
 	public static void showProgress(ShimmerFrameLayout progressView, boolean show) {
 		if (show) {
 			progressView.setVisibility(View.VISIBLE);
-			progressView.startShimmerAnimation();
+			progressView.startShimmer();
 		} else {
 			progressView.setVisibility(View.GONE);
-			progressView.stopShimmerAnimation();
+			progressView.stopShimmer();
 		}
 	}
 

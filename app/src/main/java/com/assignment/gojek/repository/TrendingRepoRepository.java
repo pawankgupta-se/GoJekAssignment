@@ -1,6 +1,6 @@
 package com.assignment.gojek.repository;
 
-import android.support.annotation.WorkerThread;
+
 
 import com.assignment.gojek.BuildConfig;
 import com.assignment.gojek.models.GitRepo;
@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.inject.Named;
 
+import androidx.annotation.WorkerThread;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

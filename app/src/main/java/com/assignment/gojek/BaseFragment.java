@@ -2,15 +2,16 @@ package com.assignment.gojek;
 
 import android.app.Activity;
 import android.app.Application;
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+
 
 import com.assignment.gojek.dependencies.AppComponent;
 
 import javax.inject.Inject;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProviders;
 
 /**
  * Created by Pawan Gupta on 19/05/19.
@@ -23,7 +24,7 @@ public class BaseFragment<T extends ViewModel> extends Fragment {
         FragmentActivity activity = getActivity();
         if(activity != null){
             if(mViewModelFactory != null){
-                mViewModel = ViewModelProviders.of(activity,mViewModelFactory).get(cls);
+                mViewModel = ViewModelProviders.of(activity, mViewModelFactory).get(cls);
             } else{
                 throw new RuntimeException("ViewModelProvider is null. Make sure you are calling getAppComponent().inject(Fragment.this) before initialising the view model in Fragment");
             }
