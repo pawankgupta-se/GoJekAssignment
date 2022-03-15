@@ -157,7 +157,7 @@ def libs =  [
     retrofit:       "2.9.0",
     retrofitGson:   "2.3.0",
     gson:           "2.9.0",
-    okhttp:         "3.10.0",
+    okhttp:         "4.9.3",
     okhttpLogging:  "4.9.3",
     annotation:     "3.1.1",
     leakCanary:     "1.6.3",
