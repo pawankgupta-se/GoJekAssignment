@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by Pawan Gupta on 19/05/19.
  */
 public class GitUser implements Parcelable {
-	@SerializedName("href")
+	@SerializedName("url")
 	@Expose
 	private String href;
 	@SerializedName("avatar")
