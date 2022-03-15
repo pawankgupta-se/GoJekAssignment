@@ -1,6 +1,5 @@
 package com.assignment.gojek.dependencies.modules;
 
-import android.arch.lifecycle.ViewModel;
 
 import com.assignment.gojek.features.HomeViewModel;
 
@@ -10,6 +9,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import androidx.lifecycle.ViewModel;
 import dagger.Binds;
 import dagger.MapKey;
 import dagger.Module;

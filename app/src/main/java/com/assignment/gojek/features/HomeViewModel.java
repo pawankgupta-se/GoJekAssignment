@@ -1,8 +1,5 @@
 package com.assignment.gojek.features;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
 
 import com.assignment.gojek.models.GitRepo;
 import com.assignment.gojek.repository.TrendingRepoRepository;
@@ -12,6 +9,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 import timber.log.Timber;
 
 /**

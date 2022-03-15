@@ -1,13 +1,11 @@
 package com.assignment.gojek;
 
-import android.databinding.DataBindingUtil;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
-import com.assignment.gojek.R;
 
 import com.assignment.gojek.databinding.ActivityMainBinding;
 import com.assignment.gojek.features.HomeFragment;
+
+import androidx.databinding.DataBindingUtil;
 
 /**
  * Created by Pawan Gupta on 19/05/19.

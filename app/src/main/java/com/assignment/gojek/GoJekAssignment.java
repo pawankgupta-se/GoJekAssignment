@@ -1,13 +1,13 @@
 package com.assignment.gojek;
 
-import android.support.multidex.MultiDexApplication;
+import android.app.Application;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
 
+import com.assignment.gojek.dependencies.DaggerAppComponent;
 import com.assignment.gojek.dependencies.modules.AppModule;
 import com.crashlytics.android.Crashlytics;
 import com.assignment.gojek.dependencies.AppComponent;
-import com.assignment.gojek.dependencies.DaggerAppComponent;
 import com.squareup.leakcanary.LeakCanary;
 
 import java.io.PrintWriter;
@@ -18,7 +18,7 @@ import timber.log.Timber;
 /**
  * Created by Pawan Gupta on 19/05/19.
  */
-public class GoJekAssignment extends MultiDexApplication {
+public class GoJekAssignment extends Application {
     private AppComponent mAppComponent;
 
     @Override
@@ -31,7 +31,7 @@ public class GoJekAssignment extends MultiDexApplication {
             LeakCanary.install(this);
 
             //Install LeakCanary
-            Timber.plant(new Timber.DebugTree());
+            Timber.plant();
 
         } else {
             Timber.plant(new Timber.Tree() {
@@ -68,7 +68,7 @@ public class GoJekAssignment extends MultiDexApplication {
 
     private void initDagger() {
         mAppComponent = DaggerAppComponent.builder().appModule(new AppModule(this))
-                .build();
+                                          .build();
     }
 
     public AppComponent getAppComponent() {
