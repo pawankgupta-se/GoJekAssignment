@@ -166,7 +166,7 @@ def libs =  [
     junit:          "4.13.2",
     espresso:       "3.0.2",
     dagger:         "2.41",
-    glide:          "4.13.1",
+    glide:          "4.13.2",
     room:           "1.1.1",
     firebase:       "20.1.0",
     crashlytics:    "2.10.1",
