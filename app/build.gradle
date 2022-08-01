@@ -156,7 +156,7 @@ def libs =  [
     timber:         "5.0.1",
     retrofit:       "2.9.0",
     retrofitGson:   "2.3.0",
-    gson:           "2.9.0",
+    gson:           "2.9.1",
     okhttp:         "4.9.3",
     okhttpLogging:  "4.9.3",
     annotation:     "3.1.1",
