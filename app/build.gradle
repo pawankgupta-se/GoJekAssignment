@@ -165,7 +165,7 @@ def libs =  [
     supportTest:    "1.0.2",
     junit:          "4.13.2",
     espresso:       "3.0.2",
-    dagger:         "2.41",
+    dagger:         "2.43.2",
     glide:          "4.13.1",
     room:           "1.1.1",
     firebase:       "20.1.0",
